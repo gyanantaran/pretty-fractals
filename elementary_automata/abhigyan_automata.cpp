@@ -28,7 +28,7 @@ class General_Rule
         {
             dictionary[i] = rule%2;
             rule = rule >> 1;
-            cout << dictionary[i] << endl;
+            cout << i << ": " << dictionary[i] << endl;
         }
 
     }
@@ -63,7 +63,6 @@ class General_Rule
         for(int i = 0;i<array_length;i+=1)
         {
             frame = get_frame(i);
-            cout << frame << endl;
             new_state += (dictionary[frame] << i);
         }
         curr_state = new_state;
@@ -84,7 +83,7 @@ class General_Rule
     }
 
     // funtion prints the new state.\
-    '|' if 1 at index, ' ' if 0 at index 
+    '|' if 1 at index, ' ' if 0 at index
     void print(int curr_state, int count)
     {
         if(count == 0) return;
@@ -99,13 +98,13 @@ class General_Rule
         //     cout << '|';
         // }
         cout << remainder;
-        
+
     }
 
     // Function raises a flag if some neccessary condition is surpassed
     bool checks()
     {
-        if(rule_numb <= 0) 
+        if(rule_numb <= 0)
         {
             return false;
         }
@@ -123,7 +122,7 @@ class General_Rule
         {
             if(checks())
             {
-                
+
                 update();
                 cout << endl;
                 print(curr_state,array_length);
@@ -147,8 +146,8 @@ int main()
     int duration = 20;
     // int index = 5;
     General_Rule Gr(array_length,frame_size,rule_numb,curr_state);
-    Gr.execute(duration);    
-    
+    Gr.execute(duration);
+
     return 0;
 
 }
