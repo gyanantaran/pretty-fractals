@@ -12,14 +12,14 @@ class General_Rule
     int array_length;
     int frame_size;
     int curr_state;
-
+    bool is_even;
     General_Rule(int array_length, int frame_size, int rule_numb, int curr_state)
     {
         this->array_length = array_length;
         this->frame_size = frame_size;
         this->rule_numb = rule_numb;
         this->curr_state = curr_state;
-
+        this->is_even = true;
     }
 
 
@@ -53,9 +53,9 @@ class General_Rule
         for(int i = 0;i<array_length;i+=1)
         {
             frame = get_frame(i);
-            // cout << frame << endl;
-            cout << (Rules(frame) << i) << endl;
-            new_state += (Rules(frame) << i);
+            // This is array length - (i+1) because the frame we are getting is for\
+            the most significant bit but i if for the least significant bit
+            new_state += (Rules(frame) << (array_length - (i+1)));
         }
         curr_state = new_state; 
         }
@@ -63,8 +63,16 @@ class General_Rule
     // Function updates rule_numb to new_rule_numb according to logic we decide
     void update_new_rule()
     {
-        // rule_numb -= 1;
-        return;
+        if(is_even)
+        {
+            rule_numb *= 2;
+            is_even = false;
+        }
+        else
+        {
+            rule_numb /= 2;
+            is_even = true;
+        }
     }
 
     // Function updates whatever new things we decide
@@ -81,15 +89,15 @@ class General_Rule
         if(count == 0) return;
         int remainder = curr_state%2;
         print(curr_state >> 1, count - 1);
-        // if(remainder == 0)
-        // {
-        //     cout << ' ';
-        // }
-        // if(remainder == 1)
-        // {
-        //     cout << '|';
-        // }
-        cout << remainder;
+        if(remainder == 0)
+        {
+            cout << ' ';
+        }
+        if(remainder == 1)
+        {
+            cout << '|';
+        }
+        // cout << remainder;
         
     }
 
@@ -158,7 +166,7 @@ class General_Rule
             {
                 rule_file << "if(L && C && R) return 1;\n";
             }
-            cout << frame << " " << rule%2 << endl;
+            // cout << frame << " " << rule%2 << endl;
             rule = rule >> 1;
         
         }
@@ -183,6 +191,7 @@ class General_Rule
                 update();
                 print(curr_state,array_length);
                 cout << endl;
+                generate_rule_statments();
             }
             else
             {
@@ -195,16 +204,17 @@ class General_Rule
 
 int main()
 {
-    int rule_numb = 1;
-    int array_length = 8;
+    int rule_numb = 30;
+    int array_length = 32;
     int frame_size = 3;
-    int curr_state = 0b00111000;
-    int duration = 20;
+    int curr_state = 0b000000000000001111000000000000000;
+    int duration = 13;
     // int index = 5;
     General_Rule Gr(array_length,frame_size,rule_numb,curr_state);
     Gr.execute(duration);    
     // Gr.generate_rule_statments();
     
     return 0;
+
 
 }
