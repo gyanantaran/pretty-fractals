@@ -38,12 +38,6 @@ function cond(z::Complex)
 end
 
 
-# the function for iterating over $z_{n + 1} = f(z_{n})$
-function f(z::Complex, c::Complex)
-    return (z)^2 + c
-end
-
-
 # takes in the dimensions of the array to be produced arround the given origin and for the given scale
 function return_image(size, max_iter::Int=30, scale::Float64=1.0, origin::Complex=0+0im, Z0::Complex=0.0+0.0im, C::Complex=0.0+0.0im, scheme=ColorSchemes.inferno)
     height = size[1]
@@ -104,12 +98,25 @@ function get_color(colorscheme, step, max_iter)
 end
 
 
+# the function for iterating over $z_{n + 1} = f(z_{n})$
+function f(z::Complex, c::Complex)
+    return sec(z^2 - c)
+end
+
+
 # MAIN -----------------------------------------
-size = (100000, 100000)
-output = return_image(size, 25, 0.125, -1.15+0.3im)
+size = (1000, 1000)
+iter = 30
+scale = 2.0
+origin = 0.0+0.0im
+
+Z0 = 0.0 + 0.0im
+C = -1.5 + 1im
+
+output = return_image(size, iter, scale, origin, Z0, C)
 mandel = output[1]
 julia = output[2]
 
 save("test.bmp", colorview(RGB, mandel))
-# save("./tanh_julia_vishal.bmp", colorview(RGB, julia))
+save("test-julia.bmp", colorview(RGB, julia))
 
